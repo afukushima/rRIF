@@ -1,0 +1,124 @@
+---
+title: "rRIF: An R implementation of the Regulatory Impact Factors (RIF)"
+author:
+- name: Atsushi Fukushima
+  affiliation: RIKEN Center for Sustainable Resource Science
+  email: afukushima@gmail.com
+output:
+  BiocStyle::html_document2:
+    toc_float: true
+  BiocStyle::pdf_document2: default
+package: rRIF
+abstract: |
+  Instructions for the rRIF package.
+vignette: |
+  %\VignetteIndexEntry{rRIF instructions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+Regulatory Impact factors (RIF)] is  to identify critical transcriptional regulators like transcription factors (TFs) from gene expression data based on microarrays and RNA-seq. 
+
+The rRIF package is an R implementation of the Regulatory Impact Factors (RIF) presented by Hudson et al. (2009) and Reverter et al. (2010). RIF aims to identify critical transcription factor (TF) between two conditions from gene expression data. The concept is based on integration of three statistical information from typical transcriptome data: (1) the co-expression change between the TF and the differentially expressed genes (DEGs); (2) the amount of differential expression (i.e, foldchange) of DEGs; and (3) the abundance of DEGs. The package can calculate both RIF1 and RIF2 and expand the original HudsonRIF's code.
+
+This vignette is largely based on the paper by  [Bottje et al. (2017)](https://bmcsystbiol.biomedcentral.com/articles/10.1186/s12918-017-0396-2). Basically, you can calculate RIF by using a list of DEGs and regulator information of your intereset. You should use appropriate gene identifiers or probeset-IDs.
+
+
+# Methods - the mathematical formalism
+
+## Expression
+Average (normalized) expression of the $i$-th gene across the $n$ samples (eg. biological replicates) of experimental condition A and where each $x_{i,k}$ corresponds to the expression of the $i$-th gene in the $k$-th sample ($k$ = 1, …, $n$).
+
+$$ E_{i,A} = \frac {1}{n} \sum_{k=1}^{n} x_{i,k} $$
+
+## Differential expression (DE)
+Difference in the expression of the $i$-th gene in the two conditions under scrutiny, A and B (eg. healthy and diseased, two breeds, two diets, two time points, ...). Note that it is not a requirement to have the same number of samples surveyed in the two conditions.
+
+$$ dE_{i} = E_{i,A} - E_{i,B}$$
+
+## Co-expression
+Similarity of expression profile (typically and shown here the Spearman correlation coefficient) between the $i$-th and the $j$-th genes across the $n$ samples of condition A.
+
+$$ C_{i,j} = r_A(i,j) = \frac {Cov(i,j)}{\sigma_i \sigma_j} $$
+## Diffenrential co-expression or differential wiring in co-expression networks
+Difference in the co-expression between the $i$-th and the $j$-th genes in the two conditions under scrutiny, A and B. Note that it is not a requirement to have the same number of samples surveyed in the two conditions.
+
+$$ dC_{i,j} = r_A(i,j) - r_B(i,j)$$
+
+## Co-differential expression
+Similarity of the profile of differential expression of genes $i$ and $j$ across the levels of another experimental design effect such as time points. Two conditions, A and B, are being surveyed across a series of developmental time points.
+
+$$ CdE_{i,j} = r(dE_i, dE_j) $$
+
+
+## Phenotype Impact Factor (PIF)
+Average (normalized) expression of the $i$-th gene across the two conditions multiplied by its differential expression. In other words, PIF weights the differential expression of a given gene by its overall abundance.
+
+$$ PIF_i = \frac {1}{2} (E_{i,A} + E_{i,B})dE_i = A_idE_i $$
+
+## Regulatory Impact Factor, Option 1
+For the $i$-th regulator and across all the j differentially expressed genes ($j$ = 1, ..., $n_{dE}$) RIF1 looks at the average PIF of the $i$-th regulator weighted by the squared differential co-expression between the $i$-th regulator and the $j$-th differentially expressed gene. It addresses the question: Which regulator is consistently highly differentially co-expressed with the abundant differentially expressed gene?
+
+$$ RIF1_i = \frac {1}{n_{dE}} \sum_{j=1}^{j=n_{dE}} (PIF_j dC_{i,j}^2) $$
+
+## Regulatory Impact Factor, Option 2
+For the $i$-th regulator and across all the $j$ differentially expressed genes ($j$ = 1, ..., $n_{dE}$ ) RIF1 looks at the average change in predictive ability of the $i$-th regulator to predict the abundance of the $j$-th differentially expressed gene. It addresses the question: Which regulator has the most altered ability to predict the abundance of differentially expressed genes.
+
+$$ RIF2_i = \frac {1}{n_{dE}} [(E_{j,A} r_A(i,j))^2 - (E_{j,B} r_B(i,j))^2] $$
+
+
+# Prerequisites
+The rRIF package requires (1) a list of DEGs and (2) a list of regulators of interest. For example, we can use the transription factor database like [PlantTFDB - Plant Transcription Factor Databases](http://planttfdb.cbi.pku.edu.cn/).
+
+The rRIF package is organisms-free. It means that you can do that based on your DEGs list and pre-defined regulator list. You must use the same gene- or probeset IDs in the analysis.
+
+# Getting started
+
+## Datasets
+In this vignette, we use example datasets presented by [Bottje et al. (2017)](https://bmcsystbiol.biomedcentral.com/articles/10.1186/s12918-017-0396-2). This is a transcriptome data matrix. The data is composed of 520 significant DEGs (differentially expressed genes) and 898 transcription factors.
+
+```{R load example datasets}
+library(rRIF)
+data(ToniData)
+data(ToniData.DEGs)
+data(ToniData.TFs)
+```
+## RIF
+Using these example datasets, we can perform the RIF as follows.
+```{R RIF calculation}
+res <- rRIF(eSet = ToniData,
+            formula = geno1~geno2,
+            target.factor = "Genotype",
+            DEGs = ToniData.DEGs,
+            cor.method = "pearson",
+            regulator.list = ToniData.TFs
+            )
+```
+
+## PIF
+We can perform the PIF as follows.
+
+```{R PIF calculation}
+formula <- geno1~geno2
+samp <- list(A=as.character(formula[[2]]), B=as.character(formula[[3]]))
+res.PIF <- calculatePIF(eSet = ToniData,
+                        target.factor = "Genotype",
+                        samp$A, samp$B)
+```
+
+# References
+1. Hudson NJ et al. "A differential wiring analysis of expression data correctly identifies the gene containing the causal mutation", PLoS Comput Biol 5:e1000382 (2009) [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/19412532)
+2. Reverter A et al. "Regulatory impact factors: unraveling the transcriptional regulation of complex traits from expression data", Bioinformatics 26:896-904 (2010) [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/20144946)
+3. Bottje W et al. "Progesterone signalling in broiler skeletal muscle is associated with divergent feed efficiency", BMC Systems Biology 11:29 (2017) [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/28235404)
+
+
+
+# Session info {.unnumbered}
+
+Here is the output of `sessionInfo()` on the system on which this
+document was compiled:
+
+```{r sessionInfo, echo=FALSE}
+sessionInfo()
+```

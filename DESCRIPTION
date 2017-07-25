@@ -1,0 +1,31 @@
+Package: rRIF
+Type: Package
+Title: Regulatory impact factors (RIF)
+Version: 0.0.0.9000
+Author: Atsuhshi Fukushima <afukushima@gmail.com>
+Maintainer: Atsuhshi Fukushima <afukushima@gmail.com>
+Description: An R implementation of the Regulatory Impact Factors (RIF) 
+    presented by Hudson et al. (2009) and Reverter et al. (2010). RIF aims 
+    to identify critical transcription factor (TF) between two conditions 
+    from gene expression data. The concept is based on integration of three 
+    statistical information from typical transcriptome data: (1) the 
+    co-expression change between the TF and the differentially expressed genes
+    (DEGs); (2) the amount of differential expression (i.e, foldchange) of 
+    DEGs; and (3) the abundance of DEGs. The package can calculate both RIF1 
+    and RIF2 and simplified/expand the original HudsonRIF's code by Kevin 
+    Rue-Albrecht.
+License: file LICENSE
+Depends: R (>= 2.10)
+Imports:
+    graphics,
+    stats,
+    utils,
+    methods,
+    Biobase
+Encoding: UTF-8
+LazyData: true
+Suggests: testthat,
+    knitr,
+    rmarkdown
+RoxygenNote: 6.0.1
+VignetteBuilder: knitr
