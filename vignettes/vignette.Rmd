@@ -1,20 +1,20 @@
 ---
-title: "rRIF: An R implementation of the Regulatory Impact Factors (RIF)"
+title: 'rRIF: An R implementation of the Regulatory Impact Factors (RIF)'
 author:
-- name: Atsushi Fukushima
-  affiliation: RIKEN Center for Sustainable Resource Science
+- affiliation: RIKEN Center for Sustainable Resource Science
   email: afukushima@gmail.com
+  name: Atsushi Fukushima
+date: "`r Sys.Date()`"
 output:
-  BiocStyle::html_document2:
-    toc_float: true
-  BiocStyle::pdf_document2: default
+  BiocStyle::html_document:
+    toc_float: yes
 package: rRIF
 abstract: |
   Instructions for the rRIF package.
 vignette: |
   %\VignetteIndexEntry{rRIF instructions}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 # Introduction
@@ -76,7 +76,7 @@ The rRIF package is organisms-free. It means that you can do that based on your 
 # Getting started
 
 ## Datasets
-In this vignette, we use example datasets presented by [Bottje et al. (2017)](https://bmcsystbiol.biomedcentral.com/articles/10.1186/s12918-017-0396-2). This is a transcriptome data matrix. The data is composed of 520 significant DEGs (differentially expressed genes) and 898 transcription factors.
+In this vignette, we use example datasets presented by [Bottje et al. (2017)](https://bmcsystbiol.biomedcentral.com/articles/10.1186/s12918-017-0396-2). This is a transcriptome data matrix. The data are composed of 520 significant DEGs (differentially expressed genes) and 898 transcription factors.
 
 ```{R load example datasets}
 library(rRIF)
@@ -96,6 +96,16 @@ res <- rRIF(eSet = ToniData,
             )
 ```
 
+`rRIF` function() calculates both RIF1 and RIF2 and stores their results. Each RIF value was z-transformed by `scale` function() according to the original papers regarding RIF (Hudson et al. 2009; Reverter et al. 2010). You should get the integrated results like this.
+```{R integrated RIF}
+class(res)
+summary(res)
+integRIF <- (res$RIF1 + res$RIF2) / 2
+head(integRIF, 5)
+```
+
+You can also calculate the RIF1 and RIF2 separately using `calculateRIF1` and `calculateRIF2`.
+
 ## PIF
 We can perform the PIF as follows.
 
@@ -107,15 +117,18 @@ res.PIF <- calculatePIF(eSet = ToniData,
                         samp$A, samp$B)
 ```
 
+
+# Acknowledgments
+We thank Toni (Antonio Reverter) and Nick (Nicholas J. Hudson) for helpful discussions and for providing us with original data published by Bottje et al. (2017). This work was supported by JSPS KAKENHI Grant Numbers 26850024 and 17K07663.
+
+
 # References
 1. Hudson NJ et al. "A differential wiring analysis of expression data correctly identifies the gene containing the causal mutation", PLoS Comput Biol 5:e1000382 (2009) [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/19412532)
 2. Reverter A et al. "Regulatory impact factors: unraveling the transcriptional regulation of complex traits from expression data", Bioinformatics 26:896-904 (2010) [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/20144946)
 3. Bottje W et al. "Progesterone signalling in broiler skeletal muscle is associated with divergent feed efficiency", BMC Systems Biology 11:29 (2017) [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/28235404)
 
 
-
 # Session info {.unnumbered}
-
 Here is the output of `sessionInfo()` on the system on which this
 document was compiled:
 
