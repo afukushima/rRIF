@@ -3,7 +3,6 @@
 \docType{data}
 \name{ToniData}
 \alias{ToniData}
-\alias{Toni}
 \title{An example transcriptome dataset by Bottje et al. (2017)}
 \description{
 A transcriptome data matrix. The data is composed of 520 significant DEGs 

@@ -9,7 +9,6 @@
 ##'
 ##' @name ToniData
 ##' @docType data
-##' @aliases Toni
 ##' @title An example transcriptome dataset by Bottje et al. (2017)
 ##'
 ##' @keywords datasets
@@ -24,7 +23,6 @@ NULL
 ##'
 ##' @name ToniData.DEGs
 ##' @docType data
-##' @aliases Toni.DEGs
 ##' @title A list of DEGs in chicken RNA-seq data.
 ##'
 ##' @keywords datasets
@@ -39,7 +37,6 @@ NULL
 ##'
 ##' @name ToniData.TFs
 ##' @docType data
-##' @aliases Toni.TFs
 ##' @title A list of TFs in chicken RNA-seq data.
 ##'
 ##' @keywords datasets

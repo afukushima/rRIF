@@ -3,7 +3,6 @@
 \docType{data}
 \name{ToniData.DEGs}
 \alias{ToniData.DEGs}
-\alias{Toni.DEGs}
 \title{A list of DEGs in chicken RNA-seq data.}
 \description{
 A list of differentially expressed genes (DEGs) based on Chicken RNA-seq 

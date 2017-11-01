@@ -3,7 +3,6 @@
 \docType{data}
 \name{ToniData.TFs}
 \alias{ToniData.TFs}
-\alias{Toni.TFs}
 \title{A list of TFs in chicken RNA-seq data.}
 \description{
 A list of transcription factors (TFs) based on Chicken RNA-seq generated 
