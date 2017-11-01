@@ -87,7 +87,7 @@ rRIF <- function(eSet, formula,
                   EiAB = EiAB, Ai = Ai, dEi = dEi, PIFi = PIFi, 
                   rAij = rAij, rBij = rBij, dCij = dCij, 
                   RIF1 = RIF1, RIF2 = RIF2)
-    class(res) = "rRIF"
+    class(res) <- c("rRIF", "list")
     return(res)
 }
 
@@ -135,27 +135,8 @@ calculatePIF <- function(eSet = eSet,
   return(PIFi)
 }
 
-##' This function calculates expression levels of each gene 
-##' in each data subset.
-##'
-##' @title calculates expression levels according to phenodata in expressionSet
-##'
-##' @param eSet an ExpressionSet
-##' @param target.factor a factor of interest
-##' @param A a level of a factor (e.g., condition 1)
-##' @param B a level of a factor (e.g., condition 2)
-##' @return matrix
-##' @examples
-##' data(ToniData)
-##'
-##' formula <- geno1~geno2
-##' samp <- list(A=as.character(formula[[2]]), B=as.character(formula[[3]]))
-##' target.factor <- "Genotype"
-##' EiAB <- calculateEiAB(eSet=ToniData, target.factor=target.factor, samp$A, samp$B)
-##'
-##' @author Kevin Rue-Albrecht \url{https://github.com/kevinrue/HudsonRIF}
-##' cosmetical changes by Atsushi Fukushima
-# subset an expression dataset according to its phenodata
+## This function calculates expression levels of each gene 
+## in each data subset.
 calculateEiAB <- function(eSet, target.factor, A, B)
 {
   # Calculates the mean expression of features in samples from class A
@@ -169,28 +150,14 @@ calculateEiAB <- function(eSet, target.factor, A, B)
 }
 
 
-##' This function calculates expression levels of each gene in one condition (A).
-##'
-##' @title calculates expression levels according to phenodata in transcriptomic data
-##'
-##' @param eSet an ExpressionSet
-##' @param target.factor a factor of interest
-##' @param A a level of a factor (e.g., condition 1)
-##' @return matrix
-##' @examples
-##' data(ToniData)
-##'
-##' formula <- geno1~geno2
-##' samp <- list(A=as.character(formula[[2]]), B=as.character(formula[[3]]))
-##' target.factor <- "Genotype"
-##' EiA <- calculateEiA(eSet=ToniData, target.factor=target.factor, samp$A)
-##'
-##' @author Kevin Rue-Albrecht \url{https://github.com/kevinrue/HudsonRIF}
-##' cosmetical changes by Atsushi Fukushima
+## This function calculates expression levels of each gene 
+## in one condition (A).
 calculateEiA <- function(eSet, target.factor, A)
 {
   # Calculates the mean expression of features in samples from a given class
-  return(apply(X=Biobase::exprs(eSet[,which(Biobase::pData(eSet)[,target.factor] == A)]), MARGIN=1, FUN="mean"))
+  return(apply(X = Biobase::exprs(
+    eSet[, which(Biobase::pData(eSet)[, target.factor] == A)]), 
+    MARGIN = 1, FUN = "mean"))
 }
 
 
@@ -202,6 +169,7 @@ calculateEiA <- function(eSet, target.factor, A)
 ##' @param dCij a differential coexpression matrix
 ##' @param DEGs a list of DEGs (differentially expressed genes)
 ##' @return vector
+##' @export
 ##' @examples
 ##' data(ToniData)
 ##'
@@ -240,6 +208,7 @@ calculateRIF1 <- function(PIFi, dCij, DEGs) {
 ##' @param DEGs a list of DEGs (differentially expressed genes)
 ##' @param samp conditions
 ##' @return vector
+##' @export
 ##' @examples
 ##' data(ToniData)
 ##'
@@ -260,33 +229,7 @@ calculateRIF2 <- function(EiAB, rAij, rBij, DEGs, samp) {
     return(RIF2)
 }
 
-##' This function calculates RIF2.
-##'
-##' @title validates all parameters
-##'
-##' @param eSet an ExpressionSet
-##' @param formula an object of class "formula" (e.g., genotype1~genotype2)
-##' @param target.factor a factor of interest (e.g., "Genotype")
-##' @param DEGs a list of DEGs (differentially expressed genes)
-##' @param cor.method a list of correlation methods [i.e. c("pearson", "spearman", "kendall")]
-##' @param regulator.list a list of transcriptional regulators (e.g., transcription factors)
-##' @return vector
-##' @examples
-##' data(ToniData)
-##' data(ToniData.DEGs)
-##' data(ToniData.TFs)
-##'
-##' res <- parameter.check(
-##'          eSet = ToniData,
-##'          formula = geno1~geno2,
-##'          target.factor = "Genotype",
-##'          DEGs = ToniData.DEGs,
-##'          cor.method="pearson",
-##'          regulator.list = ToniData.TFs
-##'          )
-##' @author Kevin Rue-Albrecht \url{https://github.com/kevinrue/HudsonRIF}
-##' cosmetical changes by Atsushi Fukushima
-###################################################
+## This function validates all parameters
 parameter.check <- function(eSet, formula, target.factor, DEGs, cor.method, regulator.list) {
   ## eSet is an expressionSet
   if(class(eSet) != "ExpressionSet") 

@@ -36,7 +36,7 @@ test_that("RIF1/2 calculation", {
   
     
   ## test for calculated RIFs
-  expect_identical(class(res), "rRIF")
+  expect_identical(class(res), c("rRIF", "list"))
   
   ## RIF1
   expect_equivalent(round(res$RIF1[1], 6), 1.503376)
