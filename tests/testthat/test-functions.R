@@ -39,12 +39,12 @@ test_that("RIF1/2 calculation", {
   expect_identical(class(res), c("rRIF", "list"))
   
   ## RIF1
-  expect_equivalent(round(res$RIF1[1], 6), 1.503376)
-  expect_equivalent(round(res$RIF1[10], 6), 1.140441)
-  expect_equivalent(round(res$RIF1[length(res$RIF1)], 7), 0.717939)
+  expect_equivalent(round(res$RIF1[1], 2), -0.66)
+  expect_equivalent(round(res$RIF1[10], 2), -1.51)
+  expect_equivalent(round(res$RIF1[length(res$RIF1)], 2), -0.15)
   ## RIF2
-  expect_equivalent(round(res$RIF2[1], 6), -0.024975)
-  expect_equivalent(round(res$RIF2[10], 7), -0.2112097)
-  expect_equivalent(round(res$RIF2[length(res$RIF2)], 7), 0.3993724)
+  expect_equivalent(round(res$RIF2[1], 2), 0.2)
+  expect_equivalent(round(res$RIF2[10], 2), -1.79)
+  expect_equivalent(round(res$RIF2[length(res$RIF2)], 2), 0.19)
 
 })
