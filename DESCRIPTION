@@ -16,7 +16,7 @@ Description: An R implementation of the Regulatory Impact Factors (RIF)
     and RIF2 and simplified/expand the original HudsonRIF's code by Kevin 
     Rue-Albrecht.
 License: file LICENSE
-Depends: R (>= 2.10)
+Depends: R (>= 4.0.0)
 Imports:
     graphics,
     stats,
