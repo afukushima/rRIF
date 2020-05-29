@@ -26,7 +26,7 @@
 ##'             regulator.list = ToniData.TFs
 ##'             )
 ##' @author Kevin Rue-Albrecht \url{https://github.com/kevinrue/HudsonRIF}
-##' cosmetical changes by Atsushi Fukushima
+##' modified by Atsushi Fukushima
 rRIF <- function(eSet, formula, 
                 target.factor, DEGs,
                 cor.method = "spearman",
@@ -35,7 +35,7 @@ rRIF <- function(eSet, formula,
 
     ## Checks the validity of user-defined variables
     ## cat("Checking input variables...", fill = TRUE)
-    parameter.check(eSet, formula, target.factor, DEGs, regulator.list)
+    parameter.check(eSet, formula, target.factor, DEGs, cor.method, regulator.list)
 
     ## Set the sample info from the formula
     samp <- list(A = as.character(formula[[2]]), 
@@ -180,9 +180,6 @@ calculateEiA <- function(eSet, target.factor, A)
 ##'
 ##' @author Kevin Rue-Albrecht \url{https://github.com/kevinrue/HudsonRIF}
 ##' cosmetical changes by Atsushi Fukushima
-##########################################
-## calculation of RIF1
-##########################################
 calculateRIF1 <- function(PIFi, dCij, DEGs) {
   # Subset the PIF values to the DE genes
   DE.PIFi <- PIFi[DEGs]

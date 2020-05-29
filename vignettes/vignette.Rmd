@@ -7,7 +7,8 @@ author:
 date: "`r Sys.Date()`"
 output:
   BiocStyle::html_document:
-    toc_float: yes
+    toc_float: true
+  BiocStyle::pdf_document: default
 package: rRIF
 abstract: |
   Instructions for the rRIF package.
@@ -18,9 +19,9 @@ vignette: |
 ---
 
 # Introduction
-Regulatory Impact factors (RIF)] is  to identify critical transcriptional regulators like transcription factors (TFs) from gene expression data based on microarrays and RNA-seq. 
+[Regulatory Impact factors (RIF)](https://www.ncbi.nlm.nih.gov/pubmed/20144946) is to identify critical transcriptional regulators like transcription factors (TFs) from gene expression data based on microarrays and RNA-seq. 
 
-The rRIF package is an R implementation of the Regulatory Impact Factors (RIF) presented by Hudson et al. (2009) and Reverter et al. (2010). RIF aims to identify critical transcription factor (TF) between two conditions from gene expression data. The concept is based on integration of three statistical information from typical transcriptome data: (1) the co-expression change between the TF and the differentially expressed genes (DEGs); (2) the amount of differential expression (i.e, foldchange) of DEGs; and (3) the abundance of DEGs. The package can calculate both RIF1 and RIF2 and expand the original HudsonRIF's code.
+The rRIF package is an R implementation of the RIF presented by [Hudson et al. (2009)](https://www.ncbi.nlm.nih.gov/pubmed/19412532) and [Reverter et al. (2010)](https://www.ncbi.nlm.nih.gov/pubmed/20144946). RIF aims to identify critical transcription factor (TF) between two conditions from gene expression data. The concept is based on integration of three statistical information from typical transcriptome data: (1) the co-expression change between the TF and the differentially expressed genes (DEGs); (2) the amount of differential expression (i.e, foldchange) of DEGs; and (3) the abundance of DEGs. The package can calculate both RIF1 and RIF2 and expand the original HudsonRIF's code.
 
 This vignette is largely based on the paper by  [Bottje et al. (2017)](https://bmcsystbiol.biomedcentral.com/articles/10.1186/s12918-017-0396-2). Basically, you can calculate RIF by using a list of DEGs and regulator information of your intereset. You should use appropriate gene identifiers or probeset-IDs.
 
@@ -94,12 +95,12 @@ res <- rRIF(eSet = ToniData,
             cor.method = "pearson",
             regulator.list = ToniData.TFs
             )
+summary(res)
 ```
 
 `rRIF` function() calculates both RIF1 and RIF2 and stores their results. Each RIF value was z-transformed by `scale` function() according to the original papers regarding RIF (Hudson et al. 2009; Reverter et al. 2010). You should get the integrated results like this.
 ```{R integrated RIF}
 class(res)
-summary(res)
 integRIF <- (res$RIF1 + res$RIF2) / 2
 head(integRIF, 5)
 ```
@@ -111,10 +112,11 @@ We can perform the PIF as follows.
 
 ```{R PIF calculation}
 formula <- geno1~geno2
-samp <- list(A=as.character(formula[[2]]), B=as.character(formula[[3]]))
+samp <- list(A = as.character(formula[[2]]), B = as.character(formula[[3]]))
 res.PIF <- calculatePIF(eSet = ToniData,
                         target.factor = "Genotype",
                         samp$A, samp$B)
+head(res.PIF)
 ```
 
 

@@ -40,6 +40,7 @@ test_that("RIF1/2 calculation", {
   
   ## RIF1
   expect_equivalent(round(res$RIF1[1], 2), -0.66)
+  expect_equivalent(round(res$RIF1[1], 3), -0.655) ## see r-pkgs/DRA/DRAmethods/Toni_corrected/setup.ToniDataset_corrected.R
   expect_equivalent(round(res$RIF1[10], 2), -1.51)
   expect_equivalent(round(res$RIF1[length(res$RIF1)], 2), -0.15)
   ## RIF2

@@ -45,5 +45,5 @@ Reverter A et al. Bioinformatics 26:896 (2010)
 }
 \author{
 Kevin Rue-Albrecht \url{https://github.com/kevinrue/HudsonRIF}
-cosmetical changes by Atsushi Fukushima
+modified by Atsushi Fukushima
 }

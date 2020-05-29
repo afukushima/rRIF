@@ -2,7 +2,8 @@ Package: rRIF
 Type: Package
 Title: Regulatory impact factors (RIF)
 Version: 0.0.0.9000
-Author: Atsuhshi Fukushima <afukushima@gmail.com>
+Authors@R: person("Atsushi", "Fukushima", role = c("aut", "cre"),
+                    email = "afukushima@gmail.com")
 Maintainer: Atsuhshi Fukushima <afukushima@gmail.com>
 Description: An R implementation of the Regulatory Impact Factors (RIF) 
     presented by Hudson et al. (2009) and Reverter et al. (2010). RIF aims 
@@ -21,11 +22,15 @@ Imports:
     stats,
     utils,
     methods,
-    Biobase
+    Biobase,
+    DT,
+    plotly
 Encoding: UTF-8
 LazyData: true
-Suggests: testthat,
+Suggests: BiocStyle,
+    testthat,
     knitr,
-    rmarkdown
-RoxygenNote: 6.0.1
+    rmarkdown,
+    roxygen2
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr
