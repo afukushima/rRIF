@@ -27,7 +27,7 @@ Imports:
     plotly
 Encoding: UTF-8
 LazyData: true
-Suggests: BiocStyle,
+Suggests: prettydoc,
     testthat,
     knitr,
     rmarkdown,

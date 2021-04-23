@@ -6,14 +6,16 @@ author:
   name: Atsushi Fukushima
 date: "`r Sys.Date()`"
 output:
-  BiocStyle::html_document:
-    toc_float: true
-  BiocStyle::pdf_document: default
+  prettydoc::html_pretty:
+    toc: yes
+    theme: hpstr
+    highlight: github
+  pdf_document:
+    toc: yes
+  rmarkdown::html_vignette: default
 package: rRIF
-abstract: |
-  Instructions for the rRIF package.
 vignette: |
-  %\VignetteIndexEntry{rRIF instructions}
+  %\VignetteIndexEntry{rRIF}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
