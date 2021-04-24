@@ -88,7 +88,7 @@ rRIF <- function(eSet, formula,
                   EiAB = EiAB, Ai = Ai, dEi = dEi, PIFi = PIFi, 
                   rAij = rAij, rBij = rBij, dCij = dCij, 
                   RIF1 = RIF1, RIF2 = RIF2)
-    class(res) <- c("rRIF", "list")
+    res <- structure(res, class = c("rRIF", "list"))
     return(res)
 }
 
@@ -231,12 +231,12 @@ calculateRIF2 <- function(EiAB, rAij, rBij, DEGs, samp) {
 parameter.check <- function(eSet, formula, target.factor, DEGs, 
                             cor.method, regulator.list) {
     ## eSet is an expressionSet
-    if(class(eSet) != "ExpressionSet") 
-      stop("\"eSet\" (", class(eSet),") is not an ExpressionSet.", 
+    if(methods::is(eSet)[1] != "ExpressionSet") 
+      stop("\"eSet\" is not an ExpressionSet.", 
            call. = FALSE)
     # formula should be a formula
-    if(class(formula) != "formula")
-      stop("\"formula\" (", class(formula),") is not a formula.", call. = FALSE)
+    if(methods::is(formula)[1] != "formula")
+      stop("\"formula\" is not a formula.", call. = FALSE)
     ## formula respect format A~B
     if(length(formula[[2]]) > 1 )
       stop("\"formula\" (", 

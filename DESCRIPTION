@@ -19,6 +19,7 @@ Imports:
     graphics,
     stats,
     utils,
+    methods,
     Biobase,
     DT,
     plotly

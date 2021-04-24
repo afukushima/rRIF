@@ -148,8 +148,8 @@ diffCoexPIF.plot <- function(rRIF, reg.gene, pch.max = 0) {
 
 paramCheck.diffCoexPIF.plot <- function(rRIF, probe, pch.max) {
     # rRIF is a working output of the rRIF wrapper
-    if(class(rRIF)[1] != "rRIF"){
-      stop("\"rRIF\" (", class(rRIF),") is not an rRIF object.", call.=FALSE)
+    if(methods::is(rRIF)[1] != "rRIF"){
+      stop("\"rRIF\" (", methods::is(rRIF),") is not an rRIF object.", call.=FALSE)
     }
     # Note: $eSet, $classCol, $regulator.list, EiAB, Ai, dEi, dCij not necessary
     if(any(!c("target.factor", "DEGs", "PIFi", 
