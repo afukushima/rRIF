@@ -9,6 +9,9 @@ iMAplot(rRIF)
 \arguments{
 \item{rRIF}{"rRIF" class object}
 }
+\value{
+none
+}
 \description{
 This function provides an interactive MA-plot of rRIF results
 Differential expression of all genes plotted against the average abundance

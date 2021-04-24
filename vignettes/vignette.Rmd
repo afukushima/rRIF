@@ -102,7 +102,7 @@ summary(res)
 
 `rRIF` function() calculates both RIF1 and RIF2 and stores their results. Each RIF value was z-transformed by `scale` function() according to the original papers regarding RIF (Hudson et al. 2009; Reverter et al. 2010). You should get the integrated results like this.
 ```{R integrated RIF}
-class(res)
+## class(res)
 integRIF <- (res$RIF1 + res$RIF2) / 2
 head(integRIF, 5)
 ```

@@ -1,10 +1,9 @@
 Package: rRIF
 Type: Package
 Title: Regulatory impact factors (RIF)
-Version: 0.0.0.9000
+Version: 0.99.1
 Authors@R: person("Atsushi", "Fukushima", role = c("aut", "cre"),
                     email = "afukushima@gmail.com")
-Maintainer: Atsuhshi Fukushima <afukushima@gmail.com>
 Description: An R implementation of the Regulatory Impact Factors (RIF) 
     presented by Hudson et al. (2009) and Reverter et al. (2010). RIF aims 
     to identify critical transcription factor (TF) between two conditions 
@@ -16,21 +15,21 @@ Description: An R implementation of the Regulatory Impact Factors (RIF)
     and RIF2 and simplified/expand the original HudsonRIF's code by Kevin 
     Rue-Albrecht.
 License: file LICENSE
-Depends: R (>= 3.5)
 Imports:
     graphics,
     stats,
     utils,
-    methods,
     Biobase,
     DT,
     plotly
 Encoding: UTF-8
 LazyData: true
+biocViews: Network, Software, DifferentialExpression, GeneTarget,
+    GeneExpression, Microarray, RNASeq, Transcription
 Suggests: prettydoc,
     testthat,
     knitr,
     rmarkdown,
     roxygen2
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr

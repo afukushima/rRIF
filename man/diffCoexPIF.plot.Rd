@@ -13,6 +13,9 @@ diffCoexPIF.plot(rRIF, reg.gene, pch.max = 0)
 
 \item{pch.max}{A scaling factor defining the size of the data point associated with the maximal PIF value}
 }
+\value{
+none
+}
 \description{
 This function plots the coexpression of the specified gene with each of the DE.
 }

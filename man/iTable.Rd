@@ -11,6 +11,9 @@ iTable(rRIF, top = 30)
 
 \item{top}{specifies top X RIF}
 }
+\value{
+none
+}
 \description{
 This function provides an interactive table of rRIF results
 }

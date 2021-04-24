@@ -7,8 +7,8 @@
 ##' @param formula an object of class "formula" (e.g., genotype1~genotype2)
 ##' @param target.factor a factor of interest (e.g., "Genotype")
 ##' @param DEGs a list of DEGs (differentially expressed genes)
-##' @param cor.method a list of correlation methods [i.e. c("pearson", "spearman", "kendall")]
-##' @param regulator.list a list of transcriptional regulators (e.g., transcription factors)
+##' @param cor.method a list of correlation methods, i.e. "pearson" & "spearman"
+##' @param regulator.list a list of transcriptional regulators (e.g., TFs)
 ##' @return "rRIF" class object
 ##' @export
 ##' @references Reverter A et al. Bioinformatics 26:896 (2010)
@@ -35,7 +35,8 @@ rRIF <- function(eSet, formula,
 
     ## Checks the validity of user-defined variables
     ## cat("Checking input variables...", fill = TRUE)
-    parameter.check(eSet, formula, target.factor, DEGs, cor.method, regulator.list)
+    parameter.check(eSet, formula, target.factor, DEGs, 
+                    cor.method, regulator.list)
 
     ## Set the sample info from the formula
     samp <- list(A = as.character(formula[[2]]), 
@@ -117,36 +118,36 @@ rRIF <- function(eSet, formula,
 calculatePIF <- function(eSet = eSet,
                           target.factor = target.factor,
                           A, B) {
-  ## Calculate the average expression of each gene in each condition
-  EiAB <- calculateEiAB(eSet = eSet,
-                        target.factor = target.factor,
-                        A, B)
+    ## Calculate the average expression of each gene in each condition
+    EiAB <- calculateEiAB(eSet = eSet,
+                          target.factor = target.factor,
+                          A, B)
   
-  ## Calculates the average abundance of each gene across conditions
-  Ai <- (EiAB[, A] + EiAB[, B]) / 2
+    ## Calculates the average abundance of each gene across conditions
+    Ai <- (EiAB[, A] + EiAB[, B]) / 2
   
-  ## Calculate the differential expression in log2foldchange 
-  ## for each gene in formula
-  dEi <- EiAB[, A] - EiAB[, B]
+    ## Calculate the differential expression in log2foldchange 
+    ## for each gene in formula
+    dEi <- EiAB[, A] - EiAB[, B]
   
-  ## Calculate the PIF
-  PIFi <- Ai * dEi
+    ## Calculate the PIF
+    PIFi <- Ai * dEi
   
-  return(PIFi)
+    return(PIFi)
 }
 
 ## This function calculates expression levels of each gene 
 ## in each data subset.
 calculateEiAB <- function(eSet, target.factor, A, B)
 {
-  # Calculates the mean expression of features in samples from class A
-  EiAB <- calculateEiA(eSet, target.factor, A)
-  # Calculates the mean expression of features in samples from class B
-  EiAB <- cbind(EiAB, calculateEiA(eSet, target.factor, B))
-  # Relevant column names
-  colnames(EiAB) <- c(A,B)
-  # Returns the 2-column matrix
-  return(EiAB)
+    # Calculates the mean expression of features in samples from class A
+    EiAB <- calculateEiA(eSet, target.factor, A)
+    # Calculates the mean expression of features in samples from class B
+    EiAB <- cbind(EiAB, calculateEiA(eSet, target.factor, B))
+    # Relevant column names
+    colnames(EiAB) <- c(A,B)
+    # Returns the 2-column matrix
+    return(EiAB)
 }
 
 
@@ -154,10 +155,10 @@ calculateEiAB <- function(eSet, target.factor, A, B)
 ## in one condition (A).
 calculateEiA <- function(eSet, target.factor, A)
 {
-  # Calculates the mean expression of features in samples from a given class
-  return(apply(X = Biobase::exprs(
-    eSet[, which(Biobase::pData(eSet)[, target.factor] == A)]), 
-    MARGIN = 1, FUN = "mean"))
+    # Calculates the mean expression of features in samples from a given class
+    return(apply(X = Biobase::exprs(
+      eSet[, which(Biobase::pData(eSet)[, target.factor] == A)]), 
+      MARGIN = 1, FUN = "mean"))
 }
 
 
@@ -181,18 +182,18 @@ calculateEiA <- function(eSet, target.factor, A)
 ##' @author Kevin Rue-Albrecht \url{https://github.com/kevinrue/HudsonRIF}
 ##' cosmetical changes by Atsushi Fukushima
 calculateRIF1 <- function(PIFi, dCij, DEGs) {
-  # Subset the PIF values to the DE genes
-  DE.PIFi <- PIFi[DEGs]
-  # Squares the values
-  dCij.coefs <- dCij^2
-  # The matrix product return the RIF values (absolute PIF differs from original formula)
-  # Original Hudson formula using non-absolute PIF value
-  res <- apply(X = ((dCij.coefs %*% DE.PIFi) / length(DEGs)), 
-               MARGIN = 1, FUN = sum)
-  ## convert to Z-score
-  RIF1 <- as.vector(scale(res))
-  names(RIF1) <- names(res)
-  return(RIF1)
+    # Subset the PIF values to the DE genes
+    DE.PIFi <- PIFi[DEGs]
+    # Squares the values
+    dCij.coefs <- dCij^2
+    # The matrix product return the RIF values (absolute PIF differs from original formula)
+    # Original Hudson formula using non-absolute PIF value
+    res <- apply(X = ((dCij.coefs %*% DE.PIFi) / length(DEGs)), 
+                 MARGIN = 1, FUN = sum)
+    ## convert to Z-score
+    RIF1 <- as.vector(scale(res))
+    names(RIF1) <- names(res)
+    return(RIF1)
 }
 
 ##' This function calculates RIF2.
@@ -227,41 +228,43 @@ calculateRIF2 <- function(EiAB, rAij, rBij, DEGs, samp) {
 }
 
 ## This function validates all parameters
-parameter.check <- function(eSet, formula, target.factor, DEGs, cor.method, regulator.list) {
-  ## eSet is an expressionSet
-  if(class(eSet) != "ExpressionSet") 
-    stop("\"eSet\" (", class(eSet),") is not an ExpressionSet.", call. = FALSE)
-  # formula should be a formula
-  if(class(formula) != "formula")
-    stop("\"formula\" (", class(formula),") is not a formula.", call. = FALSE)
-  ## formula respect format A~B
-  if(length(formula[[2]]) > 1 )
-    stop("\"formula\" (", 
-         paste(as.character(formula[c(2,3)]), collapse=" ~ ") ,
-         ") contains more than one term on the left side.", call. = FALSE)
-  if(length(formula[[3]]) > 1){
-    stop("\"formula\" (", paste(as.character(
-      formula[c(2,3)]), collapse=" ~ ") ,
-      ") contains more than one term on the right side.", call. = FALSE)}
-  ## target.factor is a valid column name in pData(eSet)
-  if(!target.factor %in% names(Biobase::pData(eSet))){
-    stop("\"target.factor\" (", target.factor ,
-         ") is not a valid column name in \"pData(eSet)\"", call. = FALSE)}
-  # A and B should be valid levels of target.factor
-  samp <- list(A = as.character(formula[[2]]), 
-               B = as.character(formula[[3]]))
-  if(!samp$A %in% levels(as.factor(Biobase::pData(eSet)[,target.factor]))){
-    stop("(", samp$A ,") is not a valid class level in \"pData(eSet)[,", 
-         target.factor,"]\"", call. = FALSE)}
-  if(!samp$B %in% levels(as.factor(Biobase::pData(eSet)[,target.factor]))){
-    stop("(", samp$B ,") is not a valid class level in \"pData(eSet)[,", 
-         target.factor,"]\"", call. = FALSE)}
-  ## DEGs fully included in list of features
-  if(sum(DEGs %in% rownames(Biobase::exprs(eSet))) != length(DEGs)){
-    stop("\"DEGs\ contains ", sum(!DEGs %in% rownames(Biobase::exprs(eSet))) ,
-         " feature(s) absent from \"rownames(exprs(eSet))\"", call. = FALSE)
-  }
-  if (!is.character(cor.method))
-    stop("cor.method must specify a method of stats::cor (e.g., \"pearson\").")
+parameter.check <- function(eSet, formula, target.factor, DEGs, 
+                            cor.method, regulator.list) {
+    ## eSet is an expressionSet
+    if(class(eSet) != "ExpressionSet") 
+      stop("\"eSet\" (", class(eSet),") is not an ExpressionSet.", 
+           call. = FALSE)
+    # formula should be a formula
+    if(class(formula) != "formula")
+      stop("\"formula\" (", class(formula),") is not a formula.", call. = FALSE)
+    ## formula respect format A~B
+    if(length(formula[[2]]) > 1 )
+      stop("\"formula\" (", 
+           paste(as.character(formula[c(2,3)]), collapse=" ~ ") ,
+           ") contains more than one term on the left side.", call. = FALSE)
+    if(length(formula[[3]]) > 1){
+      stop("\"formula\" (", paste(as.character(
+        formula[c(2,3)]), collapse=" ~ ") ,
+        ") contains more than one term on the right side.", call. = FALSE)}
+    ## target.factor is a valid column name in pData(eSet)
+    if(!target.factor %in% names(Biobase::pData(eSet))){
+      stop("\"target.factor\" (", target.factor ,
+           ") is not a valid column name in \"pData(eSet)\"", call. = FALSE)}
+    # A and B should be valid levels of target.factor
+    samp <- list(A = as.character(formula[[2]]), 
+                 B = as.character(formula[[3]]))
+    if(!samp$A %in% levels(as.factor(Biobase::pData(eSet)[,target.factor]))){
+      stop("(", samp$A ,") is not a valid class level in \"pData(eSet)[,", 
+           target.factor,"]\"", call. = FALSE)}
+    if(!samp$B %in% levels(as.factor(Biobase::pData(eSet)[,target.factor]))){
+      stop("(", samp$B ,") is not a valid class level in \"pData(eSet)[,", 
+           target.factor,"]\"", call. = FALSE)}
+    ## DEGs fully included in list of features
+    if(sum(DEGs %in% rownames(Biobase::exprs(eSet))) != length(DEGs)){
+      stop("\"DEGs\ contains ", sum(!DEGs %in% rownames(Biobase::exprs(eSet))),
+           " feature(s) absent from \"rownames(exprs(eSet))\"", call. = FALSE)
+    }
+    if (!is.character(cor.method))
+      stop("must specify a method of stats::cor (e.g., \"pearson\").")
   
 }

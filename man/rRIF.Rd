@@ -4,8 +4,14 @@
 \alias{rRIF}
 \title{calculates RIF1 and RIF2 in transcriptomic data}
 \usage{
-rRIF(eSet, formula, target.factor, DEGs, cor.method = "spearman",
-  regulator.list = "")
+rRIF(
+  eSet,
+  formula,
+  target.factor,
+  DEGs,
+  cor.method = "spearman",
+  regulator.list = ""
+)
 }
 \arguments{
 \item{eSet}{an ExpressionSet}
@@ -16,9 +22,9 @@ rRIF(eSet, formula, target.factor, DEGs, cor.method = "spearman",
 
 \item{DEGs}{a list of DEGs (differentially expressed genes)}
 
-\item{cor.method}{a list of correlation methods [i.e. c("pearson", "spearman", "kendall")]}
+\item{cor.method}{a list of correlation methods, i.e. "pearson" & "spearman"}
 
-\item{regulator.list}{a list of transcriptional regulators (e.g., transcription factors)}
+\item{regulator.list}{a list of transcriptional regulators (e.g., TFs)}
 }
 \value{
 "rRIF" class object
