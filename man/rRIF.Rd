@@ -20,9 +20,9 @@ rRIF(
 
 \item{target.factor}{a factor of interest (e.g., "Genotype")}
 
-\item{DEGs}{a list of DEGs (differentially expressed genes)}
+\item{DEGs}{a list of differentially expressed genes (DEGs)}
 
-\item{cor.method}{a list of correlation methods, i.e. "pearson" & "spearman"}
+\item{cor.method}{a list of correlation methods, i.e. pearson & spearman}
 
 \item{regulator.list}{a list of transcriptional regulators (e.g., TFs)}
 }

@@ -27,7 +27,8 @@ data(ToniData)
 formula <- geno1~geno2
 samp <- list(A=as.character(formula[[2]]), B=as.character(formula[[3]]))
 target.factor <- "Genotype"
-PIF <- calculatePIF(eSet=ToniData, target.factor=target.factor, samp$A, samp$B)
+PIF <- calculatePIF(eSet=ToniData, target.factor=target.factor,
+                    samp$A, samp$B)
 
 }
 \references{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/util.R
 \name{diffCoexPIF.plot}
 \alias{diffCoexPIF.plot}
-\title{Co-expression relationsips between the specified TF and the DE}
+\title{Co-expression relationships between the specified TF and the DE}
 \usage{
 diffCoexPIF.plot(rRIF, reg.gene, pch.max = 0)
 }
@@ -11,13 +11,13 @@ diffCoexPIF.plot(rRIF, reg.gene, pch.max = 0)
 
 \item{reg.gene}{The regulatory gene/probeset to plot co-expression values}
 
-\item{pch.max}{A scaling factor defining the size of the data point associated with the maximal PIF value}
+\item{pch.max}{A scaling factor defining the size of the data point}
 }
 \value{
 none
 }
 \description{
-This function plots the coexpression of the specified gene with each of the DE.
+Plots for the coexpression of the specified gene with each of the DE.
 }
 \details{
 Modified Hudson::diffCoexPIF.plot()
