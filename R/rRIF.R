@@ -28,38 +28,29 @@
 ##' modified by Atsushi Fukushima
 rRIF <- function(eSet, formula, target.factor, DEGs, cor.method = "spearman",
     regulator.list = "") {
-
     ## Checks the validity of user-defined variables
-    ## cat("Checking input variables...", fill = TRUE)
     parameter.check(eSet, formula, target.factor, DEGs,
                     cor.method, regulator.list)
-
     ## Set the sample info from the formula
     samp <- list(A = as.character(formula[[2]]),
                 B = as.character(formula[[3]])
                 )
-
     ## Identifies the list of regulators to consider
     if(any(regulator.list == "")) {
         regulator.list = rownames(Biobase::exprs(eSet))[!rownames(
             Biobase::exprs(eSet)
             ) %in% DEGs]}
-
     ## Calculate the average expression of each gene in each condition
     EiAB <- calculateEiAB(eSet = eSet,
                         target.factor = target.factor,
                         samp$A, samp$B)
-
     ## Calculates the average abundance of each gene across conditions
     Ai <- (EiAB[, samp$A] + EiAB[, samp$B]) / 2
-
     ## Calculate the differential expression in log2foldchange
     ## for each gene in formula
     dEi <- EiAB[, samp$A] - EiAB[, samp$B]
-
     ## Calculate the PIF
     PIFi <- Ai * dEi
-
     ## Calculate the coexpression of all pairs of genes in each condition
     ## condition A
     rAij <- stats::cor(x = t(Biobase::exprs(
@@ -71,10 +62,8 @@ rRIF <- function(eSet, formula, target.factor, DEGs, cor.method = "spearman",
         eSet[, which(Biobase::pData(eSet)[, target.factor] == samp$B)])),
         method = cor.method)
     rBij <- rBij[regulator.list, DEGs]
-
     ## Calculate the difference in coexpression between the two conditions
     dCij <- rAij - rBij
-
     ## Calculate the RIF1/2
     RIF1 <- calculateRIF1(PIFi = PIFi, dCij = dCij, DEGs = DEGs)
     RIF2 <- calculateRIF2(EiAB = EiAB, rAij = rAij, rBij = rBij,
@@ -85,7 +74,6 @@ rRIF <- function(eSet, formula, target.factor, DEGs, cor.method = "spearman",
                 rAij = rAij, rBij = rBij, dCij = dCij,
                 RIF1 = RIF1, RIF2 = RIF2)
     res <- structure(res, class = c("rRIF", "list"))
-    return(res)
 }
 
 ## calculatePIF
