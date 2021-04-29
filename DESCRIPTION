@@ -29,7 +29,7 @@ Suggests: prettydoc,
     roxygen2
 biocViews: Network, Software, DifferentialExpression, GeneTarget,
     GeneExpression, Microarray, RNASeq, Transcription
-License: GPL (>= 2)
+License: GPL-2
 VignetteBuilder: knitr
 Encoding: UTF-8
 RoxygenNote: 7.1.1
