@@ -14,7 +14,6 @@ Description: An R implementation of the Regulatory Impact Factors (RIF)
     DEGs; and (3) the abundance of DEGs. The package can calculate both RIF1 
     and RIF2 and simplified/expand the original HudsonRIF's code by Kevin 
     Rue-Albrecht.
-License: file LICENSE
 Imports:
     graphics,
     stats,
@@ -23,14 +22,14 @@ Imports:
     Biobase,
     DT,
     plotly
-Encoding: UTF-8
-LazyData: true
-biocViews: Network, Software, DifferentialExpression, GeneTarget,
-    GeneExpression, Microarray, RNASeq, Transcription
 Suggests: prettydoc,
     testthat,
     knitr,
     rmarkdown,
     roxygen2
-RoxygenNote: 7.1.1
+biocViews: Network, Software, DifferentialExpression, GeneTarget,
+    GeneExpression, Microarray, RNASeq, Transcription
+License: GPL-2
 VignetteBuilder: knitr
+Encoding: UTF-8
+RoxygenNote: 7.1.1
